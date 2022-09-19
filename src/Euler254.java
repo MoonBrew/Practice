@@ -3,12 +3,12 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Euler254 {
-	private static List<Integer> factorialMap = calculateFactorialMap(new ArrayList<>(10));
+	private static List<Integer> fact = calculateFactorialMap(new ArrayList<>(10));
 	public static void main(String[] args) {
 		//System.out.println(factorialMap);
 		
-		//int n = 150;
-		//System.out.println("Summation g(i) where 1 <= i <= " + n + " = " + ans(n));
+//		int n = 150;
+//		System.out.println("Summation g(i) where 1 <= i <= " + n + " = " + ans(n));
 		
 //		int n = 2378889;
 //		int temp =  f(n);
@@ -17,8 +17,13 @@ public class Euler254 {
 //		
 //		findSumList(72);
 //		System.out.println(Integer.MAX_VALUE >> 5);
-		findCombinations("12225", 5, "   ");
-		System.out.println("Size of map:" + combinationMap.size());
+//		Set<String> l = findCombinations("54321", 14, " ");
+//		List<String> n = new ArrayList<String>(l.size());
+//		n.addAll(l);
+//		List<String> m = findSortedCombinations("21345");
+//		System.out.println("Size of map:" + combinationMap.size());
+//		System.out.println(m.equals(n));
+//		System.out.println(combinationMap);
 		//System.out.println(findSortedCombinations("Jossy"));
 //		for(int i = 1000; i < 1100; i++) {
 //			System.out.print("For " + i);
@@ -32,6 +37,93 @@ public class Euler254 {
 //			
 //		}
 		
+		//find lowest number to add to I
+//		for(int i = 100; i < 200; i++) {
+//			System.out.print("For " + i);
+//			
+//			for(int size = 1; size < 200; size++) {//clearly the sizes are incremental
+//				BigInteger digits = findLowestSumToI(i, size);
+//				if(digits == null)
+//					continue;
+//				else {
+//					System.out.println(": " + digits);
+//					break;
+//				}
+//			}
+//		}
+		
+		//find lowest number to add to I - II
+//		for(int i = 100; i < 200; i++) {
+//			System.out.print("For " + i);
+//			BigInteger digits = findLowestSumToI(i);
+//			System.out.println(": " + digits);
+//		}
+//		
+		
+//		for(int i = 1; i < 10000; i++) {
+//			System.out.print("sf(x) = sf(" + i + ") = s(");
+//			int f = f(i);
+//			System.out.print(") = s(" + f + ") = " + s(f));
+//			System.out.println();
+//		}
+//		System.out.println(s(f(999999997)));
+//		BigInteger [] ans = findLowestFactorialSumToN(new BigInteger("69999999999999"));
+//		System.out.println(Arrays.toString(ans));
+//		System.out.println(s(ans));
+		
+		System.out.println(ansNew(150));
+		//test(150);
+	}
+	
+	private static void test(long n) {
+		for (long i = 1; i <= n; i++) {
+			BigInteger [] temp = gNew(i);
+			if(s(f(temp)) != i) {
+				System.out.println("Error for " + i + ": " + Arrays.toString(temp));
+			}
+		}
+	}
+
+
+	private static BigInteger [] findLowestFactorialSumToN(BigInteger N){
+		BigInteger [] noOfDigits = new BigInteger[10];
+		BigInteger digits = BigInteger.ZERO;
+		BigInteger place = BigInteger.ONE;
+		for(int digit = 9; digit > 0; digit--) {
+			if(N.equals(BigInteger.ZERO)) {
+				break;
+			}
+			noOfDigits[digit] = N.divide(BigInteger.valueOf(fact.get(digit)));
+			N = N.remainder(BigInteger.valueOf(fact.get(digit)));
+			
+			//adding the digits
+//			for(BigInteger i = BigInteger.ZERO; !(noOfDigits.subtract(i)).equals(BigInteger.ZERO); i = i.add(BigInteger.ONE)) {
+//				digits = digits.add(place.multiply(BigInteger.valueOf(digit)));
+//				place = place.multiply(BigInteger.TEN);
+//			}
+		}
+
+		return noOfDigits;
+		
+	}
+	
+	private static BigInteger findLowestSumToI(long x) {
+		long noOf9s = x / 9;
+		long rem = x % 9;
+		
+		BigInteger digits = BigInteger.ZERO;
+		BigInteger place = BigInteger.ONE;
+		int j = 0;
+		for (; j < noOf9s; j++){
+			digits = digits.add(place.multiply(BigInteger.valueOf(9)));
+			place = place.multiply(BigInteger.TEN);
+		}
+		
+		if (rem > 0) {
+			digits = digits.add(place.multiply(BigInteger.valueOf(rem)));
+		}
+		
+		return digits;
 	}
 	
 	private static BigInteger findLowestSumToI(int i, int size){
@@ -53,7 +145,7 @@ public class Euler254 {
 		int j = 0;
 		for (; j < noOf9s; j++){
 			digits = digits.add(place.multiply(BigInteger.valueOf(9)));
-			place = place.multiply(BigInteger.valueOf(10));
+			place = place.multiply(BigInteger.TEN);
 		}
 		//non 9s, padding
 		int pad = size - noOf9s;
@@ -77,37 +169,11 @@ public class Euler254 {
 			}
 					
 			//place *= 10;
-			place = place.multiply(BigInteger.valueOf(10));
+			place = place.multiply(BigInteger.TEN);
 			pad--;
 		}
 		
 		return digits;
-	}
-	
-	private static List<String> findSortedCombinations(String x){
-		Set<String> l = findCombinations(x, x.length() - 2, "");
-		List<String> m = new ArrayList<String>(l.size());
-		List<String> n = new ArrayList<String>(l.size());
-		m.addAll(l);
-		n.addAll(l);
-		Collections.sort(m);
-		//System.out.println(m);
-		//System.out.println(n);
-		System.out.println(m.equals(n));
-//		List<Integer> intList = new ArrayList<Integer>(l.size());
-//		for(String s : m)
-//			intList.add(Integer.valueOf(s));
-		return m;
-	}
-	
-	public static long ans(long n) {
-		long sum = 0;
-		for (long i = 1; i <= n; i++) {
-			int temp = s(g(i));
-			sum += temp;
-			System.out.println("sg(" + i + ") = " + temp);
-		}
-		return sum;
 	}
 	
 	private static List<Integer> findSumList(int target) {
@@ -121,6 +187,33 @@ public class Euler254 {
 		System.out.println(li);
 		return li;
 	}
+
+	public static long ans(long n) {
+		long sum = 0;
+		for (long i = 1; i <= n; i++) {
+			int temp = s(g(i));
+			sum += temp;
+			//System.out.println("sg(" + i + ") = " + temp);
+		}
+		return sum;
+	}
+	
+	public static BigInteger ansNew(long n) {
+		BigInteger sum = BigInteger.ZERO;
+		System.out.println("g(n) = [null, 1, 2, 3, 4, 5, 6, 7, 8, 9]");
+		for (long i = 1; i <= n; i++) {
+			BigInteger [] temp;
+			System.out.println("g(" + i + ") = " + Arrays.toString(temp = gNew(i)));
+			sum = sum.add(s(temp));
+		}
+		return sum;
+	}
+	
+	private static BigInteger [] gNew(long x) {
+		BigInteger fSumTarget = findLowestSumToI(x);
+		return findLowestFactorialSumToN(fSumTarget);
+	}
+	
 	//target sum
 	private static int g(long x) {
 		for(int i = 0; i <= Integer.MAX_VALUE; i++) {
@@ -133,6 +226,7 @@ public class Euler254 {
 		System.out.println("g(" + x + ") = " + -1);
 		return -1;
 	}
+
 	/**
 	 * Factorial sum
 	 * @param x
@@ -144,11 +238,21 @@ public class Euler254 {
 		for (int i = 10; x != 0;) {
 			int mod = (int) (x % i);
 			x = (x - mod) / i;
-			int result = factorialMap.get(mod);
+			int result = fact.get(mod);
 			sum += result;
-			out += result + " + ";
+			out = result + "+" + out;
 		}
-		//System.out.println(out + "= " + sum);
+		System.out.print(out);
+		return sum;
+	}
+	
+	private static BigInteger f(BigInteger[] x) {
+		BigInteger sum = BigInteger.ZERO;
+		for (int i = 0; i < x.length; i++) {
+			if (x[i] == null)
+				continue;
+			sum = sum.add(x[i].multiply(BigInteger.valueOf(fact.get(i))));
+		}
 		return sum;
 	}
 	
@@ -159,6 +263,26 @@ public class Euler254 {
 			x = (x - mod) / i;
 			sum += mod;
 			
+		}
+		return sum;
+	}
+	
+	private static long s(BigInteger x) {
+		long sum = 0;
+		for (BigInteger i = BigInteger.TEN; !x.equals(BigInteger.ZERO);) {
+			BigInteger mod = x.remainder(i);
+			x = (x.subtract(mod)).divide(i);
+			sum += mod.longValue();
+		}
+		return sum;
+	}
+	
+	private static BigInteger s(BigInteger [] x) {
+		BigInteger sum = BigInteger.ZERO;
+		for (int i = 0; i < x.length; i++) {
+			if (x[i] == null)
+				continue;
+			sum = sum.add(x[i].multiply(BigInteger.valueOf(i)));
 		}
 		return sum;
 	}
@@ -175,12 +299,31 @@ public class Euler254 {
 		return fList;
 	}
 
+	private static List<String> findSortedCombinations(String x){
+			Set<String> l = findCombinations(x);
+			List<String> m = new ArrayList<String>(l.size());
+			m.addAll(l);
+			Collections.sort(m);
+			//System.out.println(m);
+			//System.out.println(n);
+			
+	//		List<Integer> intList = new ArrayList<Integer>(l.size());
+	//		for(String s : m)
+	//			intList.add(Integer.valueOf(s));
+			return m;
+		}
+	
+	private static Set<String> findCombinations(String x){
+		//defaults
+		return findCombinations(x, x.length(), " ");
+	}
+
 	private static Map<String, Set<String>> combinationMap = new HashMap<String, Set<String>>();
 	private static Set<String> findCombinations(String s, int mapKeySizeThreshold, String callTreeSpace){
-		System.out.println(callTreeSpace + "Call() with: " + s);
+		//System.out.println(callTreeSpace + "Call() with: " + s);
 		Set<String> cSet;
 		if (combinationMap.containsKey(s)) {
-			System.out.println(callTreeSpace + "Successfully used duplicate");
+			//System.out.println(callTreeSpace + " Duplicate!");
 			return combinationMap.get(s);
 		}
 		else if (s.length() == 1) {
@@ -191,7 +334,7 @@ public class Euler254 {
 			cSet = new TreeSet<String>();
 			for (int i = 0; i < s.length(); i++) {
 				Set<String> subCombinations = findCombinations(s.substring(0, i)
-						+ s.substring(i + 1), mapKeySizeThreshold, callTreeSpace + callTreeSpace);
+						+ s.substring(i + 1), mapKeySizeThreshold, callTreeSpace + " ");
 				for(String t : subCombinations) {
 					cSet.add(s.charAt(i) + t);
 				}
