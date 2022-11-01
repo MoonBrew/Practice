@@ -1,3 +1,4 @@
+package oldEuler254;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
