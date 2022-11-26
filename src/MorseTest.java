@@ -10,7 +10,9 @@ public class MorseTest  {
 	private String morse;
 
 	/*
-	 * Example 1
+	 * Example 1: Normal sentence
+	 * As a rule, for every Morse sentence, we should consider a space
+	 * between Morse letters, and three spaces between morse words
 	 * 
 	 * English: "The wizard quickly jinxed the gnomes before they vaporized."
 	 * Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
@@ -19,7 +21,7 @@ public class MorseTest  {
      		+ ".-.-.-"
 	 */
 	@Test
-	public void shouldConvertFirstExampleToMorseTest() {
+	public void shouldConvertEnglishToMorse() {
 		english = "The wizard quickly jinxed the gnomes before they vaporized.";
 		morse = "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
 				+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
@@ -29,7 +31,7 @@ public class MorseTest  {
 	}
 
 	@Test
-	public void shouldReverseFromMorseToFirstExampleTest() {
+	public void shouldReverseMorseToEnglish() {
 		english = "The wizard quickly jinxed the gnomes before they vaporized.";
 		morse = "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
 				+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
@@ -40,8 +42,7 @@ public class MorseTest  {
 
 	@Test
 	@Disabled
-	public void shouldConvertEnglishWithTwoSpacesToMorseTest() {
-		//should add 3 spaces in morse for each space in english
+	public void shouldConvertEnglishWithTwoSpacesToMorse() {
 		english = "The  wizard.";
 		morse = "- .... .      .-- .. --.. .- .-. -.. "
 				+ ".-.-.-";
@@ -50,10 +51,26 @@ public class MorseTest  {
 
 	@Test
 	@Disabled
-	public void shouldReverseToEnglishWithTwoSpacesFromMorseTest() {
+	public void shouldReverseToEnglishWithTwoSpacesFromMorse() {
 		String english = "The  wizard.";
 		String morse = "- .... .      .-- .. --.. .- .-. -.. "
 				+ ".-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+	
+	
+	/*
+	 * Example 2 REMOVED
+	 * Trailing and beginning spaces
+	 * 
+	 * English: " The wizard.   "
+	 * Morse: "- .... .   .-- .. --.. .- .-. -.. .-.-.-"
+	 */
+	@Test
+	@Disabled
+	public void shouldIgnoreTheStartAndEndSpaces() {
+		english = " The wizard.   ";
+		morse = "- .... .   .-- .. --.. .- .-. -.. .-.-.-";
+		Assertions.assertEquals(morse, Morse.run(false, english));
 	}
 }
