@@ -39,9 +39,16 @@ public class MorseTest  {
 				+ ".-.-.-";
 		Assertions.assertEquals(morse, Morse.run(false, english));
 	}
-
+	
+	/*
+	 * Example 3: A sentence with 2 spaces in between
+	 * Also two spaces in English are equivalent to six spaces in Morse
+	 * Assuming this space is only between words
+	 * 
+	 * english = "The  wizard."
+	 * morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+	 */
 	@Test
-	@Disabled
 	public void shouldConvertEnglishWithTwoSpacesToMorse() {
 		english = "The  wizard.";
 		morse = "- .... .      .-- .. --.. .- .-. -.. "
@@ -56,21 +63,5 @@ public class MorseTest  {
 		String morse = "- .... .      .-- .. --.. .- .-. -.. "
 				+ ".-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
-	}
-	
-	
-	/*
-	 * Example 2 REMOVED
-	 * Trailing and beginning spaces
-	 * 
-	 * English: " The wizard.   "
-	 * Morse: "- .... .   .-- .. --.. .- .-. -.. .-.-.-"
-	 */
-	@Test
-	@Disabled
-	public void shouldIgnoreTheStartAndEndSpaces() {
-		english = " The wizard.   ";
-		morse = "- .... .   .-- .. --.. .- .-. -.. .-.-.-";
-		Assertions.assertEquals(morse, Morse.run(false, english));
 	}
 }
