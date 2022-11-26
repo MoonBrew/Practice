@@ -35,6 +35,7 @@ public interface Euler254 {
 	/**
 	 * Define sf(n) as the sum of the digits of f(n).
 	 * So sf(342) = 3 + 2 = 5.
+	 * 
 	 * @param n
 	 * @return sum of the digits of f(n)
 	 */
@@ -62,7 +63,6 @@ public interface Euler254 {
 	 * The sum of all the sg(i) where 1 <= i <= n.
 	 * When n is 20, ans(20) is 156
 	 * 
-	 * @author jossy
 	 * @param n
 	 * @return The sum of all the sg(i) where 1 <= i <= n
 	 */
