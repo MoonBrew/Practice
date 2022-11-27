@@ -25,19 +25,26 @@ public class Morse {
 		}
 		else {
 			/*
-			English to Morse
-			English: "The wizard quickly jinxed the gnomes before they vaporized."
-			Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
-		     		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
-		     		+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
-		     		+ ".-.-.-"
-		     */
+			 * English to Morse
+			 * Examples:
+			 * English: "The wizard quickly jinxed the gnomes before they vaporized."
+			 * Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
+			 * 		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
+			 * 		+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
+			 * 		+ ".-.-.-"
+			 * 
+			 * English = "The  wizard."
+			 * Morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+			 * 
+			 * English = "The   wizard."
+			 * Morse = "- .... .         .-- .. --.. .- .-. -.. .-.-.-"
+			 * 			 */
 			for(int current = 0; current < textToTranslate.length(); current++) {
 				translatedText += englishToMorseMap.get(Character.toUpperCase(textToTranslate.charAt(current)));
-				int next = current + 1;
-				if(next != textToTranslate.length()) {//translation is not done
-					if(textToTranslate.charAt(next) != ' ' //next char is not a space
-							&& textToTranslate.charAt(current) != ' ') {//current char is not a space
+				if(current + 1 != textToTranslate.length()) {//as long as there are more chars
+					//logic of when to add a space: only between letters
+					if(textToTranslate.charAt(current + 1) != ' ' //not at end of word
+							&& textToTranslate.charAt(current) != ' ') {//map will handle spaces
 						translatedText += ' ';
 					}
 				}

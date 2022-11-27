@@ -9,19 +9,34 @@ public class MorseTest  {
 	private String english;
 	private String morse;
 
+	
 	/*
-	 * Example 1: Normal sentence
+	 * Examples: Morse to English
+	 * A long sentence
+	 * A short sentence with the following spaces:
+	 *		1 spaces - Space is a delimiter for letters. This example is just a single word.
+	 * 			Should result in no space but converting collected symbols to a letter
+	 * 		2 spaces - should give error
+	 * 		3 spaces - should be a single space between words
+	 * 		5 spaces - should give error
+	 * 		6 spaces - should be a double space between words
+	 * 		7 spaces - should give error
+	 * 
+	 */
+
+	/*
+	 * Example: Long sentence
 	 * As a rule, for every Morse sentence, we should consider a space
 	 * between Morse letters, and three spaces between morse words
 	 * 
-	 * English: "The wizard quickly jinxed the gnomes before they vaporized."
 	 * Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
-     		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
-     		+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
-     		+ ".-.-.-"
+	 		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
+	 		+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
+	 		+ ".-.-.-"
+	 * English: "The wizard quickly jinxed the gnomes before they vaporized."
 	 */
 	@Test
-	public void shouldConvertEnglishToMorse() {
+	public void shouldReverseLongSentenceToEnglish() {
 		english = "The wizard quickly jinxed the gnomes before they vaporized.";
 		morse = "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
 				+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
@@ -30,8 +45,60 @@ public class MorseTest  {
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
 
+	/*
+	 * Example: A word
+	 * morse = "- .... ."
+	 * english = "The"
+	 */
 	@Test
-	public void shouldReverseMorseToEnglish() {
+	public void shouldReverseWordToEnglish() {
+		String english = "The";
+		String morse = "- .... .";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	
+	@Test
+	public void shouldReverseFromMorseToEnglishWithTwoSpaces() {
+		String english = "The  wizard.";
+		String morse = "- .... .      .-- .. --.. .- .-. -.. "
+				+ ".-.-.-";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example with wrong spaces
+	 * morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-"
+	 * english = "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	@Disabled
+	public void shouldGiveErrorDueToWrongNumberOfSpaces() {
+		String english = "Invalid Morse Code Or Spacing";
+		String morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/**
+	 * Examples: English to Morse
+	 * A long sentence
+	 * A single word
+	 * A short sentence with the following spaces between words:
+	 *		1 spaces - The normal
+	 * 		2 spaces - should give 6 spaces in Morse
+	 * 		3 spaces - should give 9 spaces in Morse
+	 */
+	
+	/*
+	 * Example: Covert a long sentence
+	 * English: "The wizard quickly jinxed the gnomes before they vaporized."
+	 * Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
+	 *			+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
+	 *			+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
+	 *			+ ".-.-.-"
+	 */
+	@Test
+	public void shouldConvertLongSentenceToMorse() {
 		english = "The wizard quickly jinxed the gnomes before they vaporized.";
 		morse = "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
 				+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
@@ -39,14 +106,11 @@ public class MorseTest  {
 				+ ".-.-.-";
 		Assertions.assertEquals(morse, Morse.run(false, english));
 	}
-	
+
 	/*
-	 * Example 3: A sentence with 2 spaces in between
-	 * Also two spaces in English are equivalent to six spaces in Morse
-	 * Assuming this space is only between words
-	 * 
-	 * english = "The  wizard."
-	 * morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+	 * Example: A short sentence with 2 spaces in between
+	 * English = "The  wizard."
+	 * Morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
 	 */
 	@Test
 	public void shouldConvertEnglishWithTwoSpacesToMorse() {
@@ -56,12 +120,16 @@ public class MorseTest  {
 		Assertions.assertEquals(morse, Morse.run(false, english));
 	}
 
+	/*
+	 * Example: A short sentence with 3 spaces in between
+	 * English = "The   wizard."
+	 * Morse = "- .... .         .-- .. --.. .- .-. -.. .-.-.-"
+	 */
 	@Test
-	@Disabled
-	public void shouldReverseToEnglishWithTwoSpacesFromMorse() {
-		String english = "The  wizard.";
-		String morse = "- .... .      .-- .. --.. .- .-. -.. "
+	public void shouldConvertEnglishWithThreeSpacesToMorse() {
+		english = "The   wizard.";
+		morse = "- .... .         .-- .. --.. .- .-. -.. "
 				+ ".-.-.-";
-		Assertions.assertEquals(english, Morse.run(true, morse));
+		Assertions.assertEquals(morse, Morse.run(false, english));
 	}
 }
