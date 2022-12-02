@@ -1,3 +1,4 @@
+package Morse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,15 +14,74 @@ public class Morse {
 		String translatedText = "";
 
 		if(morseToEnglish) {
-			for(String word : textToTranslate.split("   ")) {
-				for(String morseLetter : word.split(" ")) {
-					translatedText += morseToEnglishMap.get(morseLetter);
+			/*
+			 * Morse to English
+			 * Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
+			 * 		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
+			 * 		+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
+			 * 		+ ".-.-.-"
+			 * English: "The wizard quickly jinxed the gnomes before they vaporized."
+			 * 
+			 * Morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+			 * English = "The  wizard."
+			 */
+			String morseLetter = "";
+			String spaces = "";
+			boolean collectingSpaces = false;
+			for(int current = 0; current < textToTranslate.length(); current++) {
+				/*
+				 * Example with only single space
+				 * morse = "- .... ."
+				 * english = "The"
+				 * 
+				 * Example with 6 spaces
+				 * morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+				 * english = "The  wizard."
+				 * 
+				 * Example with 3 spaces
+				 * morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+				 * english = "The  wizard."
+				 * 
+ 				 * Example with 5 spaces
+				 * morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-"
+				 * english = "Invalid Morse Code Or Spacing"
+				 */
+				if(collectingSpaces) {
+					if (textToTranslate.charAt(current) != ' '
+							&& spaces.length() == 1) {
+						//is delimiter space
+						collectingSpaces = false;
+						spaces = "";
+					}
+					else if (textToTranslate.charAt(current) != ' ') {
+						//if 
+					}
+					else {//collecting spaces
+						spaces += textToTranslate.charAt(current);
+						if(spaces.length() == 3) {
+							translatedText += morseToEnglishMap.get(morseLetter);
+							spaces = "";
+						}
+					}
 				}
-				translatedText += " ";
+				else if (textToTranslate.charAt(current) == ' ') {
+					//single or triple space
+					//create previous letter
+					translatedText += morseToEnglishMap.get(morseLetter);
+					collectingSpaces = true;
+					spaces = "" + textToTranslate.charAt(current);
+
+					return "Invalid Morse Code Or Spacing";
+				}
+				else {
+					//collecting letters
+					morseLetter += textToTranslate.charAt(current);
+				}
 			}
+			//last letter with no space delimiter
+			translatedText += morseToEnglishMap.get(morseLetter);
 			translatedText = translatedText.toLowerCase();
 			translatedText = Character.toUpperCase(translatedText.charAt(0)) + translatedText.substring(1);
-			translatedText = translatedText.trim();
 		}
 		else {
 			/*
@@ -82,7 +142,7 @@ public class Morse {
 		map.put("-..-", 'X');
 		map.put("-.--", 'Y');
 		map.put("--..", 'Z');
-		map.put("-.-.-.-", ' ');
+		map.put("   ", ' ');
 		map.put("--..--", ',');
 		map.put("---...", ':');
 		map.put("-.-.-.", ';');

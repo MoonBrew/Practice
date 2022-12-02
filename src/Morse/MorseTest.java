@@ -1,3 +1,4 @@
+package Morse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
@@ -10,7 +11,7 @@ public class MorseTest  {
 	private String morse;
 
 	
-	/*
+	/**
 	 * Examples: Morse to English
 	 * A long sentence
 	 * A short sentence with the following spaces:
@@ -26,8 +27,6 @@ public class MorseTest  {
 
 	/*
 	 * Example: Long sentence
-	 * As a rule, for every Morse sentence, we should consider a space
-	 * between Morse letters, and three spaces between morse words
 	 * 
 	 * Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
 	 		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
