@@ -46,8 +46,8 @@ public class MorseTest  {
 
 	/*
 	 * Example: A word
-	 * morse = "- .... ."
-	 * english = "The"
+	 * Morse = "- .... ."
+	 * English = "The"
 	 */
 	@Test
 	public void shouldReverseWordToEnglish() {
@@ -56,28 +56,67 @@ public class MorseTest  {
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
 
-	
+	/*
+	 * Example: A Morse sentence with two spaces.
+	 * Morse: "- .... .  .-- .. --.. .- .-. -.. .-.-.-";
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
 	@Test
-	public void shouldReverseFromMorseToEnglishWithTwoSpaces() {
-		String english = "The  wizard.";
-		String morse = "- .... .      .-- .. --.. .- .-. -.. "
+	public void shouldGiveErrorForSentenceWithTwoSpaces() {
+		String english = "Invalid Morse Code Or Spacing";
+		String morse = "- .... .  .-- .. --.. .- .-. -.. .-.-.-";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+	
+	/*
+	 * Example: A Morse sentence with three spaces.
+	 * Morse: "- .... .  .-- .. --.. .- .-. -.. .-.-.-";
+	 * English: "The wizard"
+	 */
+	@Test
+	public void shouldReverseSentenceWithThreeSpaces() {
+		String english = "The wizard.";
+		String morse = "- .... .   .-- .. --.. .- .-. -.. "
 				+ ".-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
 
 	/*
-	 * Example with wrong spaces
-	 * morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-"
-	 * english = "Invalid Morse Code Or Spacing"
+	 * Example: A Morse sentence with five spaces.
+	 * Morse: "- .... .     .-- .. --.. .- .-. -.. .-.-.-"
+	 * English: "Invalid Morse Code Or Spacing"
 	 */
 	@Test
-	@Disabled
-	public void shouldGiveErrorDueToWrongNumberOfSpaces() {
+	public void shouldGiveErrorForSentenceWithFiveSpaces() {
 		String english = "Invalid Morse Code Or Spacing";
 		String morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
 
+	/*
+	 * Example: A Morse sentence with six spaces.
+	 * Morse: "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+	 * English: "The  wizard"
+	 */
+	@Test
+	public void shouldReverseSentenceWithSixSpaces() {
+		String english = "The  wizard";
+		String morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+	
+	/*
+	 * Example: A Morse sentence with seven spaces.
+	 * Morse: "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	public void shouldGiveErrorForSentenceWithSevenSpaces() {
+		String english = "Invalid Morse Code Or Spacing";
+		String morse = "- .... .       .-- .. --.. .- .-. -.. .-.-.-";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+	
 	/**
 	 * Examples: English to Morse
 	 * A long sentence

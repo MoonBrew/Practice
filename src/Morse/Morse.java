@@ -16,36 +16,43 @@ public class Morse {
 		if(morseToEnglish) {
 			/*
 			 * Morse to English
+			 * Example with a long sentence
 			 * Morse: "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
 			 * 		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
 			 * 		+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
 			 * 		+ ".-.-.-"
 			 * English: "The wizard quickly jinxed the gnomes before they vaporized."
 			 * 
+			 * Example with only single space (one word)
+			 * Morse = "- .... ."
+			 * English = "The"
+			 * 
+			 * Example with 2 spaces
+			 * Morse: "- .... .  .-- .. --.. .- .-. -.. .-.-.-"
+			 * English: "Invalid Morse Code Or Spacing"
+			 * 
+			 * Example with 3 spaces
+			 * Morse: "- .... .   .-- .. --.. .- .-. -.. .-.-.-"
+			 * English: "The wizard."
+			 * 
+			 * Example with 5 spaces
+			 * Morse: "- .... .     .-- .. --.. .- .-. -.. .-.-.-"
+			 * English: "Invalid Morse Code Or Spacing"
+			 * 
+			 * Example with 6 spaces
 			 * Morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
 			 * English = "The  wizard."
+			 * 
+			 * Example with 7 spaces
+			 * Morse: "- .... .       .-- .. --.. .- .-. -.. .-.-.-"
+			 * English: "Invalid Morse Code Or Spacing"
+			 * 
 			 */
+
 			String morseLetter = "";
 			String spaces = "";
 			boolean collectingSpaces = false;
 			for(int current = 0; current < textToTranslate.length(); current++) {
-				/*
-				 * Example with only single space
-				 * morse = "- .... ."
-				 * english = "The"
-				 * 
-				 * Example with 6 spaces
-				 * morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
-				 * english = "The  wizard."
-				 * 
-				 * Example with 3 spaces
-				 * morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
-				 * english = "The  wizard."
-				 * 
- 				 * Example with 5 spaces
-				 * morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-"
-				 * english = "Invalid Morse Code Or Spacing"
-				 */
 				if(collectingSpaces) {
 					if (textToTranslate.charAt(current) != ' '
 							&& spaces.length() == 1) {
