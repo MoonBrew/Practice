@@ -53,9 +53,10 @@ public class Morse {
 			String collectedSymbols = "";
 			String collectedSpaces = "";
 			boolean firstLetter = true;
+			boolean atLeastOneSpaceAdded = false;
 			for(char c : textToTranslate.toCharArray()) {
 				//encounter non-space
-				//process collected spaces
+				//process remaining collected spaces
 				//stop collecting spaces
 				//start collecting letters
 				if(c != ' ') {
@@ -63,25 +64,17 @@ public class Morse {
 					//process collected spaces
 					//collectedSpaces = 
 					//""	in between symbols, do nothing
-					//" "	in between letters, do nothing
+					//" "(1)	in between letters, do nothing
 					//"  "(2)(2%3=2)	Wrong number of spaces, give error
-					//"   "(3)(3%3=0) convert to single space " "(1)(3/3=1)
 					//"     "(5)(5%3=2) Wrong number of spaces, give error
-					//"      "(6)(6%3=0) convert to double space "  "(2)(6/3=2)
-					//"       "(7)(7%3=1) Wrong number of spaces, give error
-					if(collectedSpaces.length() > 1) {
-						if(collectedSpaces.length() % 3 != 0) {
+					//"       "(7)(7%3=1) Wrong number of spaces, give error. 6 handled below, 1 remaining
+					if(collectedSpaces.length() > 1 || collectedSpaces.length() == 1 && atLeastOneSpaceAdded) {
 							return "Invalid Morse Code Or Spacing";
-						}
-						else {
-							for(int count = 0; count < collectedSpaces.length() / 3; count++) {
-								translatedText += ' ';
-							}
-						}
 					}
 					
 					//stop collecting spaces
 					collectedSpaces = "";
+					atLeastOneSpaceAdded = false;
 					
 					//start collecting letters
 					collectedSymbols += c;
@@ -90,6 +83,7 @@ public class Morse {
 				//process collected symbols
 				//stop collecting symbols 
 				//start collecting spaces
+				//every 3 space, process spaces
 				else if(c == ' ') {
 					//process collected symbols
 					//collectedSymbols = 
@@ -113,6 +107,15 @@ public class Morse {
 					
 					//start collecting spaces
 					collectedSpaces += c;
+					
+					//every 3 space, process spaces
+					if(collectedSpaces.length() == 3) {
+						char convertedSpace = morseToEnglishMap.get(collectedSpaces);
+						translatedText += convertedSpace;
+						atLeastOneSpaceAdded = true;
+						//reset
+						collectedSpaces = "";
+					}
 				}
 			}
 			
