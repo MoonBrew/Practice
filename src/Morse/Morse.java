@@ -1,4 +1,5 @@
 package Morse;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,46 +50,76 @@ public class Morse {
 			 * 
 			 */
 
-			String morseLetter = "";
-			String spaces = "";
-			boolean collectingSpaces = false;
-			for(int current = 0; current < textToTranslate.length(); current++) {
-				if(collectingSpaces) {
-					if (textToTranslate.charAt(current) != ' '
-							&& spaces.length() == 1) {
-						//is delimiter space
-						collectingSpaces = false;
-						spaces = "";
-					}
-					else if (textToTranslate.charAt(current) != ' ') {
-						//if 
-					}
-					else {//collecting spaces
-						spaces += textToTranslate.charAt(current);
-						if(spaces.length() == 3) {
-							translatedText += morseToEnglishMap.get(morseLetter);
-							spaces = "";
+			String collectedSymbols = "";
+			String collectedSpaces = "";
+			boolean firstLetter = true;
+			for(char c : textToTranslate.toCharArray()) {
+				//encounter non-space
+				//process collected spaces
+				//stop collecting spaces
+				//start collecting letters
+				if(c != ' ') {
+					
+					//process collected spaces
+					//collectedSpaces = 
+					//""	in between symbols, do nothing
+					//" "	in between letters, do nothing
+					//"  "(2)(2%3=2)	Wrong number of spaces, give error
+					//"   "(3)(3%3=0) convert to single space " "(1)(3/3=1)
+					//"     "(5)(5%3=2) Wrong number of spaces, give error
+					//"      "(6)(6%3=0) convert to double space "  "(2)(6/3=2)
+					//"       "(7)(7%3=1) Wrong number of spaces, give error
+					if(collectedSpaces.length() > 1) {
+						if(collectedSpaces.length() % 3 != 0) {
+							return "Invalid Morse Code Or Spacing";
+						}
+						else {
+							for(int count = 0; count < collectedSpaces.length() / 3; count++) {
+								translatedText += ' ';
+							}
 						}
 					}
+					
+					//stop collecting spaces
+					collectedSpaces = "";
+					
+					//start collecting letters
+					collectedSymbols += c;
 				}
-				else if (textToTranslate.charAt(current) == ' ') {
-					//single or triple space
-					//create previous letter
-					translatedText += morseToEnglishMap.get(morseLetter);
-					collectingSpaces = true;
-					spaces = "" + textToTranslate.charAt(current);
-
-					return "Invalid Morse Code Or Spacing";
-				}
-				else {
-					//collecting letters
-					morseLetter += textToTranslate.charAt(current);
+				//encounter space
+				//process collected symbols
+				//stop collecting symbols 
+				//start collecting spaces
+				else if(c == ' ') {
+					//process collected symbols
+					//collectedSymbols = 
+					//""	in between spaces, do nothing
+					//"*"	get letter from collected symbols
+					if(collectedSymbols.length() > 0){
+						char convertedLetter;
+						//Capitalise first letter
+						if (firstLetter) {
+							convertedLetter = morseToEnglishMap.get(collectedSymbols);
+							firstLetter = false;
+						}
+						else {
+							convertedLetter = Character.toLowerCase(morseToEnglishMap.get(collectedSymbols));
+						}
+						translatedText += convertedLetter;
+						
+						//stop collecting symbols 
+						collectedSymbols = "";
+					}
+					
+					//start collecting spaces
+					collectedSpaces += c;
 				}
 			}
-			//last letter with no space delimiter
-			translatedText += morseToEnglishMap.get(morseLetter);
-			translatedText = translatedText.toLowerCase();
-			translatedText = Character.toUpperCase(translatedText.charAt(0)) + translatedText.substring(1);
+			
+			//last letter has no delimiter
+			char convertedLetter = Character.toLowerCase(morseToEnglishMap.get(collectedSymbols));
+			translatedText += convertedLetter;
+
 		}
 		else {
 			/*
@@ -120,7 +151,7 @@ public class Morse {
 		return translatedText;
 	}
 
-	public static Map<String, Character> populateMorseToEnglishMap(){
+	public static Map<String, Character> populateMorseToEnglishMap() {
 		Map<String, Character> map = new HashMap<String, Character>();
 
 		map.put(".-", 'A');
@@ -129,7 +160,7 @@ public class Morse {
 		map.put("-..", 'D');
 		map.put(".", 'E');
 		map.put("..-.", 'F');
-		map.put("--.", 'G'); 
+		map.put("--.", 'G');
 		map.put("....", 'H');
 		map.put("..", 'I');
 		map.put(".---", 'J');
@@ -160,7 +191,7 @@ public class Morse {
 		map.put("-.--.-", '\'');
 		map.put(".----", '1');
 		map.put("..---", '2');
-		map.put("...--", '3'); 
+		map.put("...--", '3');
 		map.put("....-", '4');
 		map.put(".....", '5');
 		map.put("-....", '6');
@@ -172,7 +203,7 @@ public class Morse {
 		return map;
 	}
 
-	public static Map<Character, String> populateEnglishToMorseMap(){
+	public static Map<Character, String> populateEnglishToMorseMap() {
 		Map<Character, String> map = new HashMap<Character, String>();
 
 		map.put('A', ".-");
@@ -181,7 +212,7 @@ public class Morse {
 		map.put('D', "-..");
 		map.put('E', ".");
 		map.put('F', "..-.");
-		map.put('G', "--."); 
+		map.put('G', "--.");
 		map.put('H', "....");
 		map.put('I', "..");
 		map.put('J', ".---");
@@ -212,7 +243,7 @@ public class Morse {
 		map.put('\'', "-.--.-");
 		map.put('1', ".----");
 		map.put('2', "..---");
-		map.put('3', "...--"); 
+		map.put('3', "...--");
 		map.put('4', "....-");
 		map.put('5', ".....");
 		map.put('6', "-....");

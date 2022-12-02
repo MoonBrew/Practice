@@ -100,7 +100,7 @@ public class MorseTest  {
 	 */
 	@Test
 	public void shouldReverseSentenceWithSixSpaces() {
-		String english = "The  wizard";
+		String english = "The  wizard.";
 		String morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
