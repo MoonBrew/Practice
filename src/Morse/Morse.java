@@ -52,7 +52,6 @@ public class Morse {
 
 			String collectedSymbols = "";
 			String collectedSpaces = "";
-			boolean firstLetter = true;
 			boolean atLeastOneSpaceAdded = false;
 			for(char c : textToTranslate.toCharArray()) {
 				//encounter non-space
@@ -60,7 +59,7 @@ public class Morse {
 				//stop collecting spaces
 				//start collecting letters
 				if(c != ' ') {
-					
+
 					//process collected spaces
 					//collectedSpaces = 
 					//""	in between symbols, do nothing
@@ -69,13 +68,13 @@ public class Morse {
 					//"     "(5)(5%3=2) Wrong number of spaces, give error
 					//"       "(7)(7%3=1) Wrong number of spaces, give error. 6 handled below, 1 remaining
 					if(collectedSpaces.length() > 1 || collectedSpaces.length() == 1 && atLeastOneSpaceAdded) {
-							return "Invalid Morse Code Or Spacing";
+						return "Invalid Morse Code Or Spacing";
 					}
-					
+
 					//stop collecting spaces
 					collectedSpaces = "";
 					atLeastOneSpaceAdded = false;
-					
+
 					//start collecting letters
 					collectedSymbols += c;
 				}
@@ -90,24 +89,16 @@ public class Morse {
 					//""	in between spaces, do nothing
 					//"*"	get letter from collected symbols
 					if(collectedSymbols.length() > 0){
-						char convertedLetter;
-						//Capitalise first letter
-						if (firstLetter) {
-							convertedLetter = morseToEnglishMap.get(collectedSymbols);
-							firstLetter = false;
-						}
-						else {
-							convertedLetter = Character.toLowerCase(morseToEnglishMap.get(collectedSymbols));
-						}
+						char convertedLetter = Character.toLowerCase(morseToEnglishMap.get(collectedSymbols));
 						translatedText += convertedLetter;
-						
+
 						//stop collecting symbols 
 						collectedSymbols = "";
 					}
-					
+
 					//start collecting spaces
 					collectedSpaces += c;
-					
+
 					//every 3 space, process spaces
 					if(collectedSpaces.length() == 3) {
 						char convertedSpace = morseToEnglishMap.get(collectedSpaces);
@@ -118,10 +109,15 @@ public class Morse {
 					}
 				}
 			}
-			
+
 			//last letter has no delimiter
-			char convertedLetter = Character.toLowerCase(morseToEnglishMap.get(collectedSymbols));
-			translatedText += convertedLetter;
+			if(collectedSpaces.length() > 0 || textToTranslate == "") {
+				return "Invalid Morse Code Or Spacing";
+			}
+			else if (collectedSymbols.length() > 0) {
+				char convertedLetter = Character.toLowerCase(morseToEnglishMap.get(collectedSymbols));
+				translatedText += convertedLetter;
+			}
 
 		}
 		else {

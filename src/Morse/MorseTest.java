@@ -1,7 +1,6 @@
 package Morse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 
 public class MorseTest  {
 
@@ -10,11 +9,11 @@ public class MorseTest  {
 	private String english;
 	private String morse;
 
-	
+
 	/**
 	 * Examples: Morse to English
 	 * A long sentence
-	 * A short sentence with the following spaces:
+	 * A short sentence with the following spaces in-between:
 	 *		1 spaces - Space is a delimiter for letters. This example is just a single word.
 	 * 			Should result in no space but converting collected symbols to a letter
 	 * 		2 spaces - should give error
@@ -23,6 +22,16 @@ public class MorseTest  {
 	 * 		6 spaces - should be a double space between words
 	 * 		7 spaces - should give error
 	 * 
+	 * No symbol examples:
+	 * 		An empty string
+	 * 		A single space
+	 * 		A double space
+	 * 		A triple space - should give a single space
+	 * 		A four space
+	 * 		A five space
+	 * 		A six space - should give a double space
+	 * 		A seven space
+	 * 		Rest should give error.
 	 */
 
 	/*
@@ -32,11 +41,11 @@ public class MorseTest  {
 	 		+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
 	 		+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
 	 		+ ".-.-.-"
-	 * English: "The wizard quickly jinxed the gnomes before they vaporized."
+	 * English: "the wizard quickly jinxed the gnomes before they vaporized."
 	 */
 	@Test
 	public void shouldReverseLongSentenceToEnglish() {
-		english = "The wizard quickly jinxed the gnomes before they vaporized.";
+		english = "the wizard quickly jinxed the gnomes before they vaporized.";
 		morse = "- .... .   .-- .. --.. .- .-. -..   --.- ..- .. -.-. -.- .-.."
 				+ " -.--   .--- .. -. -..- . -..   - .... .   --. -. --- -- . ...   -..."
 				+ " . ..-. --- .-. .   - .... . -.--   ...- .- .--. --- .-. .. --.. . -.. "
@@ -47,12 +56,12 @@ public class MorseTest  {
 	/*
 	 * Example: A word
 	 * Morse = "- .... ."
-	 * English = "The"
+	 * English = "the"
 	 */
 	@Test
 	public void shouldReverseWordToEnglish() {
-		String english = "The";
-		String morse = "- .... .";
+		english = "the";
+		morse = "- .... .";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
 
@@ -63,20 +72,20 @@ public class MorseTest  {
 	 */
 	@Test
 	public void shouldGiveErrorForSentenceWithTwoSpaces() {
-		String english = "Invalid Morse Code Or Spacing";
-		String morse = "- .... .  .-- .. --.. .- .-. -.. .-.-.-";
+		english = "Invalid Morse Code Or Spacing";
+		morse = "- .... .  .-- .. --.. .- .-. -.. .-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
-	
+
 	/*
 	 * Example: A Morse sentence with three spaces.
 	 * Morse: "- .... .  .-- .. --.. .- .-. -.. .-.-.-";
-	 * English: "The wizard"
+	 * English: "the wizard"
 	 */
 	@Test
 	public void shouldReverseSentenceWithThreeSpaces() {
-		String english = "The wizard.";
-		String morse = "- .... .   .-- .. --.. .- .-. -.. "
+		english = "the wizard.";
+		morse = "- .... .   .-- .. --.. .- .-. -.. "
 				+ ".-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
@@ -88,23 +97,23 @@ public class MorseTest  {
 	 */
 	@Test
 	public void shouldGiveErrorForSentenceWithFiveSpaces() {
-		String english = "Invalid Morse Code Or Spacing";
-		String morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-";
+		english = "Invalid Morse Code Or Spacing";
+		morse = "- .... .     .-- .. --.. .- .-. -.. .-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
 
 	/*
 	 * Example: A Morse sentence with six spaces.
 	 * Morse: "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
-	 * English: "The  wizard"
+	 * English: "the  wizard"
 	 */
 	@Test
 	public void shouldReverseSentenceWithSixSpaces() {
-		String english = "The  wizard.";
-		String morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-";
+		english = "the  wizard.";
+		morse = "- .... .      .-- .. --.. .- .-. -.. .-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
-	
+
 	/*
 	 * Example: A Morse sentence with seven spaces.
 	 * Morse: "- .... .      .-- .. --.. .- .-. -.. .-.-.-"
@@ -112,11 +121,115 @@ public class MorseTest  {
 	 */
 	@Test
 	public void shouldGiveErrorForSentenceWithSevenSpaces() {
-		String english = "Invalid Morse Code Or Spacing";
-		String morse = "- .... .       .-- .. --.. .- .-. -.. .-.-.-";
+		english = "Invalid Morse Code Or Spacing";
+		morse = "- .... .       .-- .. --.. .- .-. -.. .-.-.-";
 		Assertions.assertEquals(english, Morse.run(true, morse));
 	}
-	
+
+	/*
+	 * Example an empty Morse sentence.
+	 * 
+	 * Morse: ""
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	public void shouldGiveErrorForEmptySentence() {
+		english = "Invalid Morse Code Or Spacing";
+		morse = "";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example an Morse sentence with just a single space. No symbols
+	 * 
+	 * Morse: " "
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	public void shouldGiveErrorForSentenceWithSingleSpaceNoSymbols() {
+		english = "Invalid Morse Code Or Spacing";
+		morse = " ";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example an Morse sentence with just a two spaces. No symbols
+	 * 
+	 * Morse: "  "
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	public void shouldGiveErrorForSentenceWithTwoSpacesNoSymbols() {
+		english = "Invalid Morse Code Or Spacing";
+		morse = "  ";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example an Morse sentence with just a three spaces. No symbols
+	 * 
+	 * Morse: "   "
+	 * English: " "
+	 */
+	@Test
+	public void shouldReverseSentenceWithThreeSpacesNoSymbols() {
+		english = " ";
+		morse = "   ";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example an Morse sentence with just a four spaces. No symbols
+	 * 
+	 * Morse: "    "
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	public void shouldGiveErrorForSentenceWithFourSpacesNoSymbols() {
+		english = "Invalid Morse Code Or Spacing";
+		morse = "    ";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example an Morse sentence with just a five spaces. No symbols
+	 * 
+	 * Morse: "     "
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	public void shouldGiveErrorForSentenceWithFiveSpacesNoSymbols() {
+		english = "Invalid Morse Code Or Spacing";
+		morse = "     ";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example an Morse sentence with just a six spaces. No symbols
+	 * 
+	 * Morse: "      "
+	 * English: "  "
+	 */
+	@Test
+	public void shouldReverseSentenceWithSixSpacesNoSymbols() {
+		english = "  ";
+		morse = "      ";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
+	/*
+	 * Example an Morse sentence with just a seven spaces. No symbols
+	 * 
+	 * Morse: "       "
+	 * English: "Invalid Morse Code Or Spacing"
+	 */
+	@Test
+	public void shouldGiveErrorForSentenceWithSevenSpacesNoSymbols() {
+		english = "Invalid Morse Code Or Spacing";
+		morse = "       ";
+		Assertions.assertEquals(english, Morse.run(true, morse));
+	}
+
 	/**
 	 * Examples: English to Morse
 	 * A long sentence
@@ -125,8 +238,9 @@ public class MorseTest  {
 	 *		1 spaces - The normal
 	 * 		2 spaces - should give 6 spaces in Morse
 	 * 		3 spaces - should give 9 spaces in Morse
+	 * An empty string should return an empty string.
 	 */
-	
+
 	/*
 	 * Example: Covert a long sentence
 	 * English: "The wizard quickly jinxed the gnomes before they vaporized."
@@ -168,6 +282,18 @@ public class MorseTest  {
 		english = "The   wizard.";
 		morse = "- .... .         .-- .. --.. .- .-. -.. "
 				+ ".-.-.-";
+		Assertions.assertEquals(morse, Morse.run(false, english));
+	}
+
+	/*
+	 * Example: An empty string
+	 * English = ""
+	 * Morse = ""
+	 */
+	@Test
+	public void shouldConvertEmptyStringToEmptyString() {
+		english = "";
+		morse = "";
 		Assertions.assertEquals(morse, Morse.run(false, english));
 	}
 }
