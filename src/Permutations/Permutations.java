@@ -10,6 +10,9 @@ import java.util.TreeSet;
  */
 public class Permutations {
 	
+	/*
+	 * String -> Set<String>
+	 */
 	public static Set<String> get(String word) {
 		Set<String> result = new TreeSet<String>();
 		if(word == "") {

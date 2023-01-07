@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class PemutationsTest {
-
+	
 	private Set<String> expected = new TreeSet<String>();
 
 	/*
@@ -67,7 +67,6 @@ public class PemutationsTest {
 	 * 		+ ["cabd", "cadb", "cbad", "cbda", "cdab", "cdba"]
 	 * 		+ ["dabc", "dacb", "dbac", "dbca", "dcab", "dcba"]
 	 * 
-	 * Order is implied here.
 	 */
 	@Test
 	public void givenFourLetterWordThen24Results() {
@@ -78,5 +77,47 @@ public class PemutationsTest {
 				"cabd", "cadb", "cbad", "cbda", "cdab", "cdba",
 				"dabc", "dacb", "dbac", "dbca", "dcab", "dcba"});
 		Assertions.assertEquals(expected, Permutations.get("abcd"));
+	}
+	
+	/*
+	 * 4 letter word different order
+	 * Input: "cadb"
+	 * Output:["abcd", "abdc", "acbd", "acdb", "adbc", "adcb"]
+	 * 		+ ["bacd", "badc", "bcad", "bcda", "bdac", "bdca"]
+	 * 		+ ["cabd", "cadb", "cbad", "cbda", "cdab", "cdba"]
+	 * 		+ ["dabc", "dacb", "dbac", "dbca", "dcab", "dcba"]
+	 * 
+	 */
+	@Test
+	public void givenFourLetterWordInDifferentOrderThen24Results() {
+		expected.clear();
+		Collections.addAll(expected, new String[]
+				{"abcd", "abdc", "acbd", "acdb", "adbc", "adcb",
+				"bacd", "badc", "bcad", "bcda", "bdac", "bdca",
+				"cabd", "cadb", "cbad", "cbda", "cdab", "cdba",
+				"dabc", "dacb", "dbac", "dbca", "dcab", "dcba"});
+		Assertions.assertEquals(expected, Permutations.get("cadb"));
+	}
+	
+	/*
+	 * 4 letter word with duplicate letters
+	 * Input: "aabd"
+	 * Output with repetitions:
+	 * 			{"aabd", "aadb", "abad", "abda", "adab", "adba",
+				"aabd", "aadb", "abad", "abda", "adab", "adba",
+				"baad", "bada", "baad", "bada", "bdaa", "bdaa",
+				"daab", "daba", "daab", "daba", "dbaa", "dbaa"}
+	 * Output: {"aabd", "aadb", "abad", "abda", "adab", "adba",
+				"baad", "bada",                 "bdaa",       
+				"daab", "daba",                 "dbaa"        }
+	 */
+	@Test
+	public void givenFourLetterWordWithRepetitionThen12Results() {
+		expected.clear();
+		Collections.addAll(expected, new String[]
+				{"aabd", "aadb", "abad", "abda", "adab", "adba",
+				"baad", "bada",                 "bdaa",       
+				"daab", "daba",                 "dbaa"        });
+		Assertions.assertEquals(expected, Permutations.get("aabd"));
 	}
 }
